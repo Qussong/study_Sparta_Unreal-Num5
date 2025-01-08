@@ -19,13 +19,15 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
+	// Essential
 	void Move();
 	int32 Step();
+	// Challenge
+	void MoveLength(FVector PrevPos, FVector NewPos);
 	void Event();
 	
 private:
-	int32 MoveCnt;
-	FTimerHandle TimerHandle;
 	float Timer;
+	int32 MoveCnt;
 	int32 EventCnt;
 };

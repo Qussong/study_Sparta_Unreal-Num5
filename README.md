@@ -39,7 +39,7 @@
 
 **🔻구현 결과**
 
-<img src="img/MoveCnt&Pos&Event.png" width="">
+<img src="img/MoveCnt&Pos&Event&MoveLength.png" width="">
 
 ---
 
@@ -60,15 +60,17 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
-	void Move();	// Actor 이동 수행 함수
-	int32 Step();	// 이동 거리 반환 함수
-	void Event();	// 이벤트 발생 함수
+	// Essential
+	void Move();	// 액터 이동 수행 함수
+	int32 Step();	// X,Y축 이동 거리 반환 함수
+	// Challenge
+	void MoveLength(FVector PrevPos, FVector NewPos);	// 액터 이동 거리 계산
+	void Event();										// 이벤트 발생 함수
 	
 private:
-	int32 MoveCnt;	// 이동횟수 카운트
-	FTimerHandle TimerHandle;
-	float Timer;	
-	int32 EventCnt;	// 이벤트 발생횟수 카운트
+	float Timer;
+	int32 MoveCnt;
+	int32 EventCnt;
 };
 ```
 
@@ -78,7 +80,9 @@ private:
 #include "Actors/MyActor.h"
 
 AMyActor::AMyActor()
-	: MoveCnt(0), Timer(0.f), EventCnt(0)
+	: MoveCnt(0)
+	  , Timer(0.f)
+	  , EventCnt(0)
 {
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -118,24 +122,27 @@ void AMyActor::Move()
 	int DirectionX = FMath::RandBool() ? 1 : (-1);
 	int DirectionY = FMath::RandBool() ? 1 : (-1);
 
-	float NewPosX = (DeltaX * DirectionX) + GetActorLocation().X;
-	float NewPosY = (DeltaY * DirectionY) + GetActorLocation().Y;
-	FVector NewPos = FVector(NewPosX, NewPosY, GetActorLocation().Z);
+	FVector PrevPos = GetActorLocation();
+	float NewPosX = (DeltaX * DirectionX) + PrevPos.X;
+	float NewPosY = (DeltaY * DirectionY) + PrevPos.Y;
+	FVector NewPos = FVector(NewPosX, NewPosY, PrevPos.Z);
 	SetActorLocation(NewPos);
+
+	++MoveCnt;
 
 	Event();
 	
-	++MoveCnt;
-
 	FString DebugMessage_MoveCnt = FString::Printf(TEXT("MoveCnt = %d"), MoveCnt);
 	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, DebugMessage_MoveCnt);
 	UE_LOG(LogTemp, Log, TEXT("Move Cnt : %d"), MoveCnt);
-	
+
 	FString DebugMessage_NewPos = FString::Printf(
 		TEXT("Actor Pos : (%f, %f, %f)"), NewPosX / Scale, NewPosY / Scale, GetActorLocation().Z);
 	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, DebugMessage_NewPos);
 	UE_LOG(LogTemp, Log, TEXT("Actor Pos : (%f, %f, %f)"), NewPosX/Scale, NewPosY/Scale, GetActorLocation().Z);
 
+	MoveLength(PrevPos / Scale, NewPos / Scale);
+	
 	if (MoveCnt == 10)
 	{
 		UE_LOG(LogTemp, Log, TEXT("EventCnt : %d"), EventCnt);
@@ -148,6 +155,15 @@ int32_t AMyActor::Step()
 	return bRandomBoolean ? 1 : 0;
 }
 
+void AMyActor::MoveLength(FVector PrevPos, FVector NewPos)
+{
+	float MoveDistance = FMath::Sqrt(
+		FMath::Pow(static_cast<float>(NewPos.X - PrevPos.X), 2.0f) +
+		FMath::Pow(static_cast<float>(NewPos.Y - PrevPos.Y), 2.0f)
+	);
+	UE_LOG(LogTemp, Log, TEXT("%d_Move Distance : %f"), MoveCnt, MoveDistance);
+}
+
 void AMyActor::Event()
 {
 	bool bEvent = FMath::RandBool();
@@ -157,6 +173,7 @@ void AMyActor::Event()
 		++EventCnt;
 	}
 }
+
 ```
 
 

@@ -47,6 +47,8 @@
 
 🔻헤더파일(MyActor.h)
 
+[MyActor.h URL](https://github.com/Qussong/study_Sparta_Unreal-Num5/blob/main/ActorRandomMove/Source/ActorRandomMove/Public/Actors/MyActor.h)
+
 ```cpp
 UCLASS()
 class ACTORRANDOMMOVE_API AMyActor : public AActor
@@ -75,6 +77,8 @@ private:
 ```
 
 🔻Cpp파일(MyActor.cpp)
+
+[MyActor.cpp URL](https://github.com/Qussong/study_Sparta_Unreal-Num5/blob/main/ActorRandomMove/Source/ActorRandomMove/Private/Actors/MyActor.cpp)
 
 ```cpp
 #include "Actors/MyActor.h"

@@ -2,7 +2,8 @@
 
 AMyActor::AMyActor()
 	: MoveCnt(0)
-	  , Timer(0.f)
+	, Timer(0.f)
+	, EventCnt(0)
 {
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -47,6 +48,8 @@ void AMyActor::Move()
 	FVector NewPos = FVector(NewPosX, NewPosY, GetActorLocation().Z);
 	SetActorLocation(NewPos);
 
+	Event();
+	
 	++MoveCnt;
 
 	FString DebugMessage_MoveCnt = FString::Printf(TEXT("MoveCnt = %d"), MoveCnt);
@@ -57,10 +60,25 @@ void AMyActor::Move()
 		TEXT("Actor Pos : (%f, %f, %f)"), NewPosX / Scale, NewPosY / Scale, GetActorLocation().Z);
 	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, DebugMessage_NewPos);
 	UE_LOG(LogTemp, Log, TEXT("Actor Pos : (%f, %f, %f)"), NewPosX/Scale, NewPosY/Scale, GetActorLocation().Z);
+
+	if (MoveCnt == 10)
+	{
+		UE_LOG(LogTemp, Log, TEXT("EventCnt : %d"), EventCnt);
+	}
 }
 
 int32_t AMyActor::Step()
 {
 	bool bRandomBoolean = FMath::RandBool();
 	return bRandomBoolean ? 1 : 0;
+}
+
+void AMyActor::Event()
+{
+	bool bEvent = FMath::RandBool();
+	if (bEvent)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Event"));
+		++EventCnt;
+	}
 }

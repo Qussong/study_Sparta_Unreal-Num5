@@ -21,9 +21,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void Move();
 	int32 Step();
+	void Event();
 	
 private:
 	int32 MoveCnt;
 	FTimerHandle TimerHandle;
 	float Timer;
+	int32 EventCnt;
 };

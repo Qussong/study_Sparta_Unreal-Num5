@@ -65,7 +65,7 @@ public:
 	int32 Step();	// X,Y축 이동 거리 반환 함수
 	// Challenge
 	void MoveLength(FVector PrevPos, FVector NewPos);	// 액터 이동 거리 계산
-	void Event();										// 이벤트 발생 함수
+	void Event();						// 이벤트 발생 함수
 	
 private:
 	float Timer;

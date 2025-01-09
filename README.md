@@ -45,7 +45,7 @@
 
 ### 📌코드
 
-🔻헤더파일(MyActor.h)
+**🔻헤더파일(MyActor.h)**
 
 [MyActor.h URL](https://github.com/Qussong/study_Sparta_Unreal-Num5/blob/main/ActorRandomMove/Source/ActorRandomMove/Public/Actors/MyActor.h)
 
@@ -76,7 +76,7 @@ private:
 };
 ```
 
-🔻Cpp파일(MyActor.cpp)
+**🔻Cpp파일(MyActor.cpp)**
 
 [MyActor.cpp URL](https://github.com/Qussong/study_Sparta_Unreal-Num5/blob/main/ActorRandomMove/Source/ActorRandomMove/Private/Actors/MyActor.cpp)
 
